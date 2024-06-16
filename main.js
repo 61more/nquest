@@ -331,7 +331,7 @@ async function listMajors() {
     try {
         response = await gapi.client.sheets.spreadsheets.values.get({
             spreadsheetId: '1QMjhvVYjDOco7jhZ9hnRx8KyrvOEq5QdC3bB-GSTsU0',
-            range: 'シート1!A1:D2',
+            range: 'シート1!C4:D15',
         });
     } catch (err) {
         console.error(err);
