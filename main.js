@@ -324,15 +324,7 @@ function getSpreadsheetData() {
 }
 
 
- document.getElementById('authorize-button').addEventListener('click', function() {
-    if (premiumTickets > 0) {
-        spinGacha('premium');
-        premiumTickets--;
-        updateTicketsDisplay();
-    } else {
-        alert('高級チケットが足りません！');
-    }
-}); 
+ 
 
   
 });
