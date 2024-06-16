@@ -251,84 +251,107 @@ function spinGacha(type) {
   });
 
 
-const CLIENT_ID = '566945190703-2icg1k1svgqdg3rh9f63i3jc1306ih2m.apps.googleusercontent.com';  // OAuth 2.0 クライアントIDを設定
-const API_KEY = 'AIzaSyCZnpg9TDD-a8OnIS8SjL476Rd8gZre1m4';      // APIキーを設定
+const CLIENT_ID = '566945190703-2icg1k1svgqdg3rh9f63i3jc1306ih2m.apps.googleusercontent.com';
+const API_KEY = 'AIzaSyCZnpg9TDD-a8OnIS8SjL476Rd8gZre1m4';
 const DISCOVERY_DOCS = ["https://sheets.googleapis.com/$discovery/rest?version=v4"];
 const SCOPES = "https://www.googleapis.com/auth/spreadsheets.readonly";
-  
-
 
 const authorizeButton = document.getElementById('authorize-button');
 const signoutButton = document.getElementById('signout-button');
 const content = document.getElementById('content');
 
-function handleClientLoad() {
-  
-    gapi.load('client:auth2', initClient);
- 
+let tokenClient;
+let gapiInited = false;
+let gisInited = false;
+
+function gapiLoaded() {
+    gapi.load('client', initializeGapiClient);
 }
 
-function initClient() {
-  
-    gapi.client.init({
-    
+async function initializeGapiClient() {
+    await gapi.client.init({
         apiKey: API_KEY,
-        clientId: CLIENT_ID,
         discoveryDocs: DISCOVERY_DOCS,
-        scope: SCOPES
-    }).then(() => {
-      console.log('Client initialized');
-        gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
-        updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+    });
+    gapiInited = true;
+    maybeEnableButtons();
+}
+
+function gisLoaded() {
+    tokenClient = google.accounts.oauth2.initTokenClient({
+        client_id: CLIENT_ID,
+        scope: SCOPES,
+        callback: '', // defined later
+    });
+    gisInited = true;
+    maybeEnableButtons();
+}
+
+function maybeEnableButtons() {
+    if (gapiInited && gisInited) {
+        authorizeButton.style.display = 'block';
         authorizeButton.onclick = handleAuthClick;
         signoutButton.onclick = handleSignoutClick;
-    }, (error) => {
-        console.error(JSON.stringify(error, null, 2));
-    });
-}
-
-function updateSigninStatus(isSignedIn) {
-    if (isSignedIn) {
-        authorizeButton.style.display = 'none';
-        signoutButton.style.display = 'block';
-        getSpreadsheetData();
-    } else {
-        authorizeButton.style.display = 'block';
-        signoutButton.style.display = 'none';
     }
 }
 
-function handleAuthClick(event) {
-    gapi.auth2.getAuthInstance().signIn();
-    
-}
-
-function handleSignoutClick(event) {
-    gapi.auth2.getAuthInstance().signOut();
-}
-
-function getSpreadsheetData() {
-    gapi.client.sheets.spreadsheets.values.get({
-        spreadsheetId: '1QMjhvVYjDOco7jhZ9hnRx8KyrvOEq5QdC3bB-GSTsU0', // スプレッドシートIDを設定
-        range: 'シート1!C4:D15', // 取得する範囲を設定
-    }).then((response) => {
-        const range = response.result;
-        if (range.values.length > 0) {
-            let output = '';
-            for (let i = 0; i < range.values.length; i++) {
-                const row = range.values[i];
-                output += row.join(', ') + '\n';
-            }
-            content.textContent = output;
-        } else {
-            content.textContent = 'No data found.';
+function handleAuthClick() {
+    tokenClient.callback = async (resp) => {
+        if (resp.error !== undefined) {
+            throw (resp);
         }
-    }, (response) => {
-        content.textContent = 'Error: ' + response.result.error.message;
-    });
+        authorizeButton.style.display = 'none';
+        signoutButton.style.display = 'block';
+        await listMajors();
+    };
+
+    if (gapi.client.getToken() === null) {
+        // Prompt the user to select a Google Account and ask for consent to share their data
+        // when establishing a new session.
+        tokenClient.requestAccessToken({ prompt: 'consent' });
+    } else {
+        // Skip display of account chooser and consent dialog for an existing session.
+        tokenClient.requestAccessToken({ prompt: '' });
+    }
 }
 
-handleClientLoad();
+function handleSignoutClick() {
+    const token = gapi.client.getToken();
+    if (token !== null) {
+        google.accounts.oauth2.revoke(token.access_token);
+        gapi.client.setToken('');
+        authorizeButton.style.display = 'block';
+        signoutButton.style.display = 'none';
+        content.textContent = '';
+    }
+}
+
+async function listMajors() {
+    let response;
+    try {
+        response = await gapi.client.sheets.spreadsheets.values.get({
+            spreadsheetId: '1QMjhvVYjDOco7jhZ9hnRx8KyrvOEq5QdC3bB-GSTsU0',
+            range: 'シート1!A1:D2',
+        });
+    } catch (err) {
+        console.error(err);
+        return;
+    }
+    const range = response.result;
+    if (!range || !range.values || range.values.length == 0) {
+        content.textContent = 'No data found.';
+        return;
+    }
+    content.textContent = range.values.map(row => row.join(', ')).join('\n');
+}
+
+
+    gapiLoaded();
+    gisLoaded();
+
+
+
+
  
 
   
