@@ -328,8 +328,8 @@ function getSpreadsheetData() {
     });
 }
 
-
- document.addEventListener('DOMContentLoaded', handleClientLoad);
+handleClientLoad();
+ 
 
   
 });
