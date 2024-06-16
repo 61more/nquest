@@ -268,7 +268,7 @@ function handleClientLoad() {
 
 function initClient() {
     gapi.client.init({
-      console.log('Initializing client...');
+    
         apiKey: API_KEY,
         clientId: CLIENT_ID,
         discoveryDocs: DISCOVERY_DOCS,
