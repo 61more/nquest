@@ -263,13 +263,13 @@ const signoutButton = document.getElementById('signout-button');
 const content = document.getElementById('content');
 
 function handleClientLoad() {
-  console.log(1);
+  
     gapi.load('client:auth2', initClient);
-  console.log(2);
+ 
 }
 
 function initClient() {
-  console.log('Client initialized');
+  
     gapi.client.init({
     
         apiKey: API_KEY,
