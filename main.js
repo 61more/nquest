@@ -267,6 +267,7 @@ function handleClientLoad() {
 }
 
 function initClient() {
+  console.log('Client initialized');
     gapi.client.init({
     
         apiKey: API_KEY,
@@ -274,6 +275,7 @@ function initClient() {
         discoveryDocs: DISCOVERY_DOCS,
         scope: SCOPES
     }).then(() => {
+      console.log('Client initialized');
         gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
         updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
         authorizeButton.onclick = handleAuthClick;
