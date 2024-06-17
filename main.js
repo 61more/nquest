@@ -396,6 +396,7 @@ async function increaseExperience() {
       alert(`経験値が増加しました。行動力 10`);
   } else {
       alert('指定されたセルに入力がありません。');
+      handleSignoutClick();
   }
 }
 
