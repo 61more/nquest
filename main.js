@@ -361,10 +361,10 @@ function handleSignoutClick() {
 
 async function checkCell(username) {
   let sheetName;
-  if (username === 'ユーザー1') {
-      sheetName = 'ユーザー1';
-  } else if (username === 'ユーザー2') {
-      sheetName = 'ユーザー2';
+  if (username === 'アーニャ') {
+      sheetName = 'アーニャ';
+  } else if (username === 'ベッキー') {
+      sheetName = 'ベッキー';
   } else if (username === 'ユーザー3') {
       sheetName = 'ユーザー3';
   } else {
