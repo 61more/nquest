@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const pages = document.querySelectorAll('.page');
   const menuItems = document.querySelectorAll('.menu-item');
 
+
+
   const resetStorageButton = document.getElementById('reset-storage');
 
   // Initialize stats
@@ -218,11 +220,16 @@ function spinGacha(type) {
     localStorage.removeItem('normalTickets');
     localStorage.removeItem('premiumTickets');
     localStorage.removeItem('collectedItems');
-    normalTickets = 0;
+    localStorage.removeItem('username');
+    
     premiumTickets = 0;
     collectedItems = { normal: [], premium: [] };
     updateTicketsDisplay();
     updateItemList(); // Update item list to clear displayed items
+    usernameInput.style.display = 'block';
+    saveUsernameButton.style.display = 'block';
+    welcomeMessage.textContent = '';
+    usernameInput.textContent ='';
     alert('ローカルストレージのデータがリセットされました。');
 });
 
@@ -255,6 +262,31 @@ const CLIENT_ID = '566945190703-2icg1k1svgqdg3rh9f63i3jc1306ih2m.apps.googleuser
 const API_KEY = 'AIzaSyCZnpg9TDD-a8OnIS8SjL476Rd8gZre1m4';
 const DISCOVERY_DOCS = ["https://sheets.googleapis.com/$discovery/rest?version=v4"];
 const SCOPES = "https://www.googleapis.com/auth/spreadsheets.readonly";
+
+const usernameInput = document.getElementById('username-input');
+const saveUsernameButton = document.getElementById('save-username-button');
+const welcomeMessage = document.getElementById('welcome-message');
+
+function saveUsername() {
+  const username = usernameInput.value;
+  if (username) {
+      localStorage.setItem('username', username);
+      displayUsername();
+  }
+}
+saveUsernameButton.addEventListener('click', saveUsername);
+
+function displayUsername() {
+  const username = localStorage.getItem('username');
+  if (username) {
+      welcomeMessage.textContent = `Welcome, ${username}!`;
+      usernameInput.style.display = 'none';
+      saveUsernameButton.style.display = 'none';
+  } else {
+      welcomeMessage.textContent = '';
+  }
+}
+displayUsername();
 
 const authorizeButton = document.getElementById('authorize-button');
 const signoutButton = document.getElementById('signout-button');
@@ -302,7 +334,8 @@ function handleAuthClick() {
         }
         authorizeButton.style.display = 'none';
         signoutButton.style.display = 'block';
-        await listMajors();
+        await increaseExperience();
+        //await listMajors();
     };
 
     if (gapi.client.getToken() === null) {
@@ -324,6 +357,46 @@ function handleSignoutClick() {
         signoutButton.style.display = 'none';
         content.textContent = '';
     }
+}
+
+async function checkCell(username) {
+  let sheetName;
+  if (username === 'ユーザー1') {
+      sheetName = 'ユーザー1';
+  } else if (username === 'ユーザー2') {
+      sheetName = 'ユーザー2';
+  } else if (username === 'ユーザー3') {
+      sheetName = 'ユーザー3';
+  } else {
+      return false;
+  }
+
+  try {
+      const response = await gapi.client.sheets.spreadsheets.values.get({
+          spreadsheetId: '1QMjhvVYjDOco7jhZ9hnRx8KyrvOEq5QdC3bB-GSTsU0',
+          range: `${sheetName}!C4`,
+      });
+      const cellValue = response.result.values[0][0];
+      return cellValue !== '';
+  } catch (err) {
+      console.error(err);
+      return false;
+  }
+}
+
+async function increaseExperience() {
+  const username = localStorage.getItem('username');
+  const cellFilled = await checkCell(username);
+  if (cellFilled) {
+      
+      actionPoints += 10; // 任意の経験値増加
+      document.getElementById('action-points').textContent = actionPoints;
+      localStorage.setItem('actionPoints', actionPoints);
+      updateLevel();
+      alert(`経験値が増加しました。行動力 10`);
+  } else {
+      alert('指定されたセルに入力がありません。');
+  }
 }
 
 async function listMajors() {
