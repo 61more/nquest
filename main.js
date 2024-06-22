@@ -334,7 +334,7 @@ function handleAuthClick() {
         }
         authorizeButton.style.display = 'none';
         signoutButton.style.display = 'block';
-        await increaseExperience();
+        
         //await listMajors();
     };
 
