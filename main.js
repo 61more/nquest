@@ -400,6 +400,8 @@ async function increaseExperience() {
   }
 }
 
+loadDataButton.addEventListener('click', increaseExperience);
+
 async function listMajors() {
     let response;
     try {
