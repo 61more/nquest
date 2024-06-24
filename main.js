@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initialize stats
   let actionPoints = parseInt(localStorage.getItem('actionPoints')) || 0;
-  let languageSkills = parseInt(localStorage.getItem('languageSkills')) || 0;
+  let verbalizing = parseInt(localStorage.getItem('verbalizing')) || 0;
   let planningSkills = parseInt(localStorage.getItem('planningSkills')) || 0;
   let level = parseInt(localStorage.getItem('level')) || 0;
   let normalTickets = parseInt(localStorage.getItem('normalTickets')) || 0;
@@ -86,10 +86,17 @@ allItems.forEach(item => {
 
 }
 
-  
+function displayStats(){
+    document.getElementById('action-points').textContent = actionPoints;
+    document.getElementById('language-skills').textContent = verbalizing;
+    document.getElementById('planning-skills').textContent = planningSkills;
+    
+    }
+  displayStats();
+  updateLevel();
   // Function to calculate and update level
   function updateLevel() {
-    const average = (actionPoints + languageSkills + planningSkills) / 3;
+    const average = (actionPoints + verbalizing + planningSkills) / 3;
     const newLevel = Math.floor(average);
     
     if (newLevel > level) {
@@ -110,14 +117,7 @@ allItems.forEach(item => {
         localStorage.setItem('level',level);
     }
 }
-
-  // Display stats
-  document.getElementById('action-points').textContent = actionPoints;
-  document.getElementById('language-skills').textContent = languageSkills;
-  document.getElementById('planning-skills').textContent = planningSkills;
-  document.getElementById('level').textContent = level;
-  updateLevel();
-  
+    
   menuItems.forEach(item => {
       item.addEventListener('click', event => {
           event.preventDefault();
@@ -217,13 +217,29 @@ function spinGacha(type) {
 
    // Reset local storage button event
    resetStorageButton.addEventListener('click', () => {
+    localStorage.removeItem('actionPoints');
+    localStorage.removeItem('verbalizing');
+    localStorage.removeItem('planingSkills');
+    localStorage.removeItem('level');
     localStorage.removeItem('normalTickets');
     localStorage.removeItem('premiumTickets');
     localStorage.removeItem('collectedItems');
     localStorage.removeItem('username');
+    localStorage.removeItem('lastUpdateDateAction');
+    localStorage.removeItem('lastUpdateDatePlanning');
+    localStorage.removeItem('lastUpdateValueVerbalizing');
+    localStorage.removeItem('lastUpdateDateVerbalizing');
+    localStorage.removeItem('lastUpdateValueVerbalizing');
     
+    actionPoints =0;
+    verbalizing = 0;
+    planningSkills = 0;
+    level = 0;
+    normalTickets = 0;
     premiumTickets = 0;
     collectedItems = { normal: [], premium: [] };
+    displayStats();
+    updateLevel();
     updateTicketsDisplay();
     updateItemList(); // Update item list to clear displayed items
     usernameInput.style.display = 'block';
@@ -240,20 +256,18 @@ function spinGacha(type) {
       // ここにゲームのロジックを追加します
       // サンプルとしてステータスを増加させる
       actionPoints += 1;
-      languageSkills += 1;
+      verbalizing += 1;
       planningSkills += 1;
 
       // 更新された値を表示
-      document.getElementById('action-points').textContent = actionPoints;
-      document.getElementById('language-skills').textContent = languageSkills;
-      document.getElementById('planning-skills').textContent = planningSkills;
+      
 
       // レベルを更新
       updateLevel();
 
       // ローカルストレージに保存
       localStorage.setItem('actionPoints', actionPoints);
-      localStorage.setItem('languageSkills', languageSkills);
+      localStorage.setItem('verbalizing', verbalizing);
       localStorage.setItem('planningSkills', planningSkills);
   });
 
@@ -360,6 +374,12 @@ function handleSignoutClick() {
     }
 }
 
+let valueAttendance = 0;
+let valueSubmission1 = 0;
+let valueSubmission2 = 0;
+let rateJournal = 0;
+
+
 async function checkCell(username) {
   let sheetName;
   if (username === 'アーニャ') {
@@ -375,26 +395,102 @@ async function checkCell(username) {
   try {
       const response = await gapi.client.sheets.spreadsheets.values.get({
           spreadsheetId: '1QMjhvVYjDOco7jhZ9hnRx8KyrvOEq5QdC3bB-GSTsU0',
-          range: `${sheetName}!C4`,
+          range: `${sheetName}!C4:D15`,
       });
-      const cellValue = response.result.values[0][0];
-      return cellValue !== '';
+      valueAttendance = response.result.values[0][0];
+      valueSubmission1 = response.result.values[1][0];
+      valueSubmission2 = response.result.values[1][1];
+
+      let cellCountJournal =0 ; 
+      for(let i=0; i<response.result.values.length -2; i++){
+        for(let j=0; j<response.result.values[i+2].length; j++){
+            if(response.result.values[i+2][j] !== ""){
+                cellCountJournal ++;}
+        }
+      }
+      rateJournal = cellCountJournal/20;
+      
+     return true;
+      
   } catch (err) {
       console.error(err);
       return false;
   }
 }
 
+
+
+function getToday() {
+  const today = new Date();
+  return today.toISOString().split('T')[0]; // yyyy-mm-dd
+}
+
 async function increaseExperience() {
   const username = localStorage.getItem('username');
+  const today = getToday();
+
+  
+
   const cellFilled = await checkCell(username);
   if (cellFilled) {
-      
-      actionPoints += 10; // 任意の経験値増加
-      document.getElementById('action-points').textContent = actionPoints;
-      localStorage.setItem('actionPoints', actionPoints);
-      updateLevel();
-      alert(`経験値が増加しました。行動力 10`);
+    const lastUpdateDateAction = localStorage.getItem('lastUpdateDateAction');
+    let commentActionPoint;
+
+    if (lastUpdateDateAction === today) {
+        commentActionPoint = '行動力経験値獲得済み: 10';
+    }else if(valueAttendance !== ""){
+        actionPoints += 10; 
+        document.getElementById('action-points').textContent = actionPoints;
+        localStorage.setItem('actionPoints', actionPoints);
+        localStorage.setItem('lastUpdateDateAction',today);
+        
+        commentActionPoint = (`出席:〇 行動力経験値 10`);
+    }
+
+    const lastUpdateDatePlanning = localStorage.getItem('lastUpdateDatePlanning');
+    let lastUpdateValuePlanning = localStorage.getItem('lastUpdateValuePlanning');
+    let updateValuePlanning = 0;
+    let commentSubmission;
+    if(valueSubmission1 !== ""){
+        updateValuePlanning += 5;       
+        
+    }
+    if(valueSubmission2 !== ""){    
+        updateValuePlanning += 5;
+    }
+
+    if (lastUpdateDatePlanning === today ) {
+        commentSubmission = '計画力経験値反映済み:'+ lastUpdateValuePlanning;
+    }else {
+        planningSkills += updateValuePlanning;  
+        document.getElementById('planning-skills').textContent = planningSkills;
+        localStorage.setItem('planningSkills', planningSkills);
+        localStorage.setItem('lastUpdateDatePlanning',today);
+        localStorage.setItem('lastUpdateValuePlanning',updateValuePlanning);
+        
+        commentSubmission = (`フォーム提出あり 計画力経験値: `+updateValuePlanning);
+    }
+
+    const lastUpdateDateVerbalizing = localStorage.getItem('lastUpdateDateVerbalizing');
+    let lastUpdateValueVerbalizing = localStorage.getItem('lastUpdateValueVerbalizing');
+    let updateValueVebalizing =  Math.floor(rateJournal*10);
+    let commentJournal;
+
+    if (lastUpdateDateVerbalizing === today ) {
+        commentJournal = '言語化力経験値反映済み:'+ lastUpdateValueVerbalizing;
+    }else {
+        verbalizing += updateValueVebalizing;  
+        document.getElementById('language-skills').textContent = verbalizing;
+        localStorage.setItem('verbalizing', verbalizing);
+        localStorage.setItem('lastUpdateDateVerbalizing',today);
+        localStorage.setItem('lastUpdateValueVerbalizing',updateValueVebalizing);
+        
+        commentJournal = (`日誌記入あり 言語化力経験値: `+updateValueVebalizing);
+    }
+    displayStats();
+    updateLevel();
+    alert(commentActionPoint +'\n'+ commentSubmission+'\n'+ commentJournal);
+    
   } else {
       alert('指定されたセルに入力がありません。');
       handleSignoutClick();
@@ -402,6 +498,9 @@ async function increaseExperience() {
 }
 
 loadDataButton.addEventListener('click', increaseExperience);
+
+
+
 
 async function listMajors() {
     let response;
