@@ -272,8 +272,28 @@ function spinGacha(type) {
   });
 
 
-const CLIENT_ID = config.clientId;
-const API_KEY = config.apikey;
+const CLIENT_ID = '566945190703-2icg1k1svgqdg3rh9f63i3jc1306ih2m.apps.googleusercontent.com';
+// APIキーを非同期で取得
+async function fetchApiKey() {
+    try {
+        const response = await fetch('/api-key');
+        const data = await response.json();
+        return data.apiKey;
+    } catch (error) {
+        console.error('Error fetching API Key:', error);
+    }
+}
+
+// APIキーを変数に格納
+let API_KEY = '';
+fetchApiKey().then(apiKey => {
+    API_KEY = apiKey;
+});
+
+
+
+
+
 const DISCOVERY_DOCS = ["https://sheets.googleapis.com/$discovery/rest?version=v4"];
 const SCOPES = "https://www.googleapis.com/auth/spreadsheets.readonly";
 
@@ -305,6 +325,8 @@ displayUsername();
 const authorizeButton = document.getElementById('authorize-button');
 const signoutButton = document.getElementById('signout-button');
 const content = document.getElementById('content');
+
+
 
 let tokenClient;
 let gapiInited = false;
@@ -524,7 +546,7 @@ async function listMajors() {
 
     gapiLoaded();
     gisLoaded();
-
+    
 
 
 
