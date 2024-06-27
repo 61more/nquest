@@ -158,16 +158,20 @@ document.getElementById('premium-gacha-button').addEventListener('click', functi
 
 // Function to spin gacha and get random item
 function spinGacha(type) {
-  let item;
-  if (type === 'normal') {
-      item = getRandomItem([3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5]);
-  } else if (type === 'premium') {
-      item = getRandomItem([4, 4, 4, 4, 4, 5]);
-  }
+  
+// モーダルウィンドウを表示
+const modal = document.getElementById('myModal');
+modal.style.display = 'block';
 
-  // Display result
-  const resultElement = document.getElementById('gacha-result');
-  resultElement.textContent = `おめでとうございます！ ${item.name} (☆${item.rarity}) のアイテムを手に入れました！`;
+// 3秒後にガチャ結果を表示する
+setTimeout(() => {
+  const gachaAnimation = document.getElementById('gachaAnimation');
+  gachaAnimation.style.display = 'none';
+  const item = drawGacha(type); // ガチャを引いて結果を取得
+
+  // 結果をモーダルに表示
+  const modalResult = document.getElementById('modal-result');
+  modalResult.innerHTML = `<p>おめでとうございます！ ${item.name} (☆${item.rarity}) のアイテムを手に入れました！</p>`;
 
   // Add item to collected items
   collectedItems[type].push(item);
@@ -175,8 +179,30 @@ function spinGacha(type) {
 
   // Update item list display
   updateItemList();
+
+ 
+}, 3000); // 3000ミリ秒 = 3秒
 }
 
+
+// モーダルウィンドウの閉じるボタン
+const closeModal = document.getElementsByClassName("close")[0];
+closeModal.onclick = function() {
+  const modal = document.getElementById('myModal');
+  modal.style.display = 'none';
+  
+}
+
+// ガチャを引く関数 (実際のガチャ処理をここに移動)
+function drawGacha(type) {
+    let item;
+    if (type === 'normal') {
+        item = getRandomItem([3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5]);
+    } else if (type === 'premium') {
+        item = getRandomItem([4, 4, 4, 4, 4, 5]);
+    }
+    return item;
+  }
 // Function to get random rarity based on probabilities
  // Function to get random item based on rarity
  function getRandomItem(rarities) {
@@ -251,7 +277,7 @@ function spinGacha(type) {
 
   document.getElementById('start-button').addEventListener('click', function() {
       const gameContainer = document.getElementById('game-container');
-      gameContainer.innerHTML = '<p>ゲームが開始されました！</p>';
+      gameContainer.innerHTML = '<p>経験値が１ずつ上昇しました</p>';
 
       // ここにゲームのロジックを追加します
       // サンプルとしてステータスを増加させる
