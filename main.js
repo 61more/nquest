@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initialize stats
   let actionPoints = parseInt(localStorage.getItem('actionPoints')) || 0;
-  let languageSkills = parseInt(localStorage.getItem('languageSkills')) || 0;
+  let verbalizing = parseInt(localStorage.getItem('verbalizing')) || 0;
   let planningSkills = parseInt(localStorage.getItem('planningSkills')) || 0;
   let level = parseInt(localStorage.getItem('level')) || 0;
   let normalTickets = parseInt(localStorage.getItem('normalTickets')) || 0;
@@ -86,10 +86,17 @@ allItems.forEach(item => {
 
 }
 
-  
+function displayStats(){
+    document.getElementById('action-points').textContent = actionPoints;
+    document.getElementById('language-skills').textContent = verbalizing;
+    document.getElementById('planning-skills').textContent = planningSkills;
+    
+    }
+  displayStats();
+  updateLevel();
   // Function to calculate and update level
   function updateLevel() {
-    const average = (actionPoints + languageSkills + planningSkills) / 3;
+    const average = (actionPoints + verbalizing + planningSkills) / 3;
     const newLevel = Math.floor(average);
     
     if (newLevel > level) {
@@ -110,14 +117,7 @@ allItems.forEach(item => {
         localStorage.setItem('level',level);
     }
 }
-
-  // Display stats
-  document.getElementById('action-points').textContent = actionPoints;
-  document.getElementById('language-skills').textContent = languageSkills;
-  document.getElementById('planning-skills').textContent = planningSkills;
-  document.getElementById('level').textContent = level;
-  updateLevel();
-  
+    
   menuItems.forEach(item => {
       item.addEventListener('click', event => {
           event.preventDefault();
@@ -158,16 +158,20 @@ document.getElementById('premium-gacha-button').addEventListener('click', functi
 
 // Function to spin gacha and get random item
 function spinGacha(type) {
-  let item;
-  if (type === 'normal') {
-      item = getRandomItem([3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5]);
-  } else if (type === 'premium') {
-      item = getRandomItem([4, 4, 4, 4, 4, 5]);
-  }
+  
+// モーダルウィンドウを表示
+const modal = document.getElementById('myModal');
+modal.style.display = 'block';
 
-  // Display result
-  const resultElement = document.getElementById('gacha-result');
-  resultElement.textContent = `おめでとうございます！ ${item.name} (☆${item.rarity}) のアイテムを手に入れました！`;
+// 3秒後にガチャ結果を表示する
+setTimeout(() => {
+  const gachaAnimation = document.getElementById('gachaAnimation');
+  gachaAnimation.style.display = 'none';
+  const item = drawGacha(type); // ガチャを引いて結果を取得
+
+  // 結果をモーダルに表示
+  const modalResult = document.getElementById('modal-result');
+  modalResult.innerHTML = `<p>おめでとうございます！ ${item.name} (☆${item.rarity}) のアイテムを手に入れました！</p>`;
 
   // Add item to collected items
   collectedItems[type].push(item);
@@ -175,8 +179,30 @@ function spinGacha(type) {
 
   // Update item list display
   updateItemList();
+
+ 
+}, 3000); // 3000ミリ秒 = 3秒
 }
 
+
+// モーダルウィンドウの閉じるボタン
+const closeModal = document.getElementsByClassName("close")[0];
+closeModal.onclick = function() {
+  const modal = document.getElementById('myModal');
+  modal.style.display = 'none';
+  
+}
+
+// ガチャを引く関数 (実際のガチャ処理をここに移動)
+function drawGacha(type) {
+    let item;
+    if (type === 'normal') {
+        item = getRandomItem([3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5]);
+    } else if (type === 'premium') {
+        item = getRandomItem([4, 4, 4, 4, 4, 5]);
+    }
+    return item;
+  }
 // Function to get random rarity based on probabilities
  // Function to get random item based on rarity
  function getRandomItem(rarities) {
@@ -217,13 +243,29 @@ function spinGacha(type) {
 
    // Reset local storage button event
    resetStorageButton.addEventListener('click', () => {
+    localStorage.removeItem('actionPoints');
+    localStorage.removeItem('verbalizing');
+    localStorage.removeItem('planingSkills');
+    localStorage.removeItem('level');
     localStorage.removeItem('normalTickets');
     localStorage.removeItem('premiumTickets');
     localStorage.removeItem('collectedItems');
     localStorage.removeItem('username');
+    localStorage.removeItem('lastUpdateDateAction');
+    localStorage.removeItem('lastUpdateDatePlanning');
+    localStorage.removeItem('lastUpdateValueVerbalizing');
+    localStorage.removeItem('lastUpdateDateVerbalizing');
+    localStorage.removeItem('lastUpdateValueVerbalizing');
     
+    actionPoints =0;
+    verbalizing = 0;
+    planningSkills = 0;
+    level = 0;
+    normalTickets = 0;
     premiumTickets = 0;
     collectedItems = { normal: [], premium: [] };
+    displayStats();
+    updateLevel();
     updateTicketsDisplay();
     updateItemList(); // Update item list to clear displayed items
     usernameInput.style.display = 'block';
@@ -235,31 +277,49 @@ function spinGacha(type) {
 
   document.getElementById('start-button').addEventListener('click', function() {
       const gameContainer = document.getElementById('game-container');
-      gameContainer.innerHTML = '<p>ゲームが開始されました！</p>';
+      gameContainer.innerHTML = '<p>経験値が１ずつ上昇しました</p>';
 
       // ここにゲームのロジックを追加します
       // サンプルとしてステータスを増加させる
       actionPoints += 1;
-      languageSkills += 1;
+      verbalizing += 1;
       planningSkills += 1;
 
       // 更新された値を表示
-      document.getElementById('action-points').textContent = actionPoints;
-      document.getElementById('language-skills').textContent = languageSkills;
-      document.getElementById('planning-skills').textContent = planningSkills;
+      
 
       // レベルを更新
       updateLevel();
 
       // ローカルストレージに保存
       localStorage.setItem('actionPoints', actionPoints);
-      localStorage.setItem('languageSkills', languageSkills);
+      localStorage.setItem('verbalizing', verbalizing);
       localStorage.setItem('planningSkills', planningSkills);
   });
 
 
 const CLIENT_ID = '566945190703-2icg1k1svgqdg3rh9f63i3jc1306ih2m.apps.googleusercontent.com';
-const API_KEY = 'AIzaSyCZnpg9TDD-a8OnIS8SjL476Rd8gZre1m4';
+// APIキーを非同期で取得
+async function fetchApiKey() {
+    try {
+        const response = await fetch('/api-key');
+        const data = await response.json();
+        return data.apiKey;
+    } catch (error) {
+        console.error('Error fetching API Key:', error);
+    }
+}
+
+// APIキーを変数に格納
+let API_KEY = '';
+fetchApiKey().then(apiKey => {
+    API_KEY = apiKey;
+});
+
+
+
+
+
 const DISCOVERY_DOCS = ["https://sheets.googleapis.com/$discovery/rest?version=v4"];
 const SCOPES = "https://www.googleapis.com/auth/spreadsheets.readonly";
 
@@ -291,6 +351,8 @@ displayUsername();
 const authorizeButton = document.getElementById('authorize-button');
 const signoutButton = document.getElementById('signout-button');
 const content = document.getElementById('content');
+
+
 
 let tokenClient;
 let gapiInited = false;
@@ -334,7 +396,8 @@ function handleAuthClick() {
         }
         authorizeButton.style.display = 'none';
         signoutButton.style.display = 'block';
-        await increaseExperience();
+        loadDataButton.style.display = 'block';
+        //await increaseExperience();
         //await listMajors();
     };
 
@@ -359,6 +422,12 @@ function handleSignoutClick() {
     }
 }
 
+let valueAttendance = 0;
+let valueSubmission1 = 0;
+let valueSubmission2 = 0;
+let rateJournal = 0;
+
+
 async function checkCell(username) {
   let sheetName;
   if (username === 'アーニャ') {
@@ -374,31 +443,112 @@ async function checkCell(username) {
   try {
       const response = await gapi.client.sheets.spreadsheets.values.get({
           spreadsheetId: '1QMjhvVYjDOco7jhZ9hnRx8KyrvOEq5QdC3bB-GSTsU0',
-          range: `${sheetName}!C4`,
+          range: `${sheetName}!C4:D15`,
       });
-      const cellValue = response.result.values[0][0];
-      return cellValue !== '';
+      valueAttendance = response.result.values[0][0];
+      valueSubmission1 = response.result.values[1][0];
+      valueSubmission2 = response.result.values[1][1];
+
+      let cellCountJournal =0 ; 
+      for(let i=0; i<response.result.values.length -2; i++){
+        for(let j=0; j<response.result.values[i+2].length; j++){
+            if(response.result.values[i+2][j] !== ""){
+                cellCountJournal ++;}
+        }
+      }
+      rateJournal = cellCountJournal/20;
+      
+     return true;
+      
   } catch (err) {
       console.error(err);
       return false;
   }
 }
 
+
+
+function getToday() {
+  const today = new Date();
+  return today.toISOString().split('T')[0]; // yyyy-mm-dd
+}
+
 async function increaseExperience() {
   const username = localStorage.getItem('username');
+  const today = getToday();
+
+  
+
   const cellFilled = await checkCell(username);
   if (cellFilled) {
-      
-      actionPoints += 10; // 任意の経験値増加
-      document.getElementById('action-points').textContent = actionPoints;
-      localStorage.setItem('actionPoints', actionPoints);
-      updateLevel();
-      alert(`経験値が増加しました。行動力 10`);
+    const lastUpdateDateAction = localStorage.getItem('lastUpdateDateAction');
+    let commentActionPoint;
+
+    if (lastUpdateDateAction === today) {
+        commentActionPoint = '行動力経験値獲得済み: 10';
+    }else if(valueAttendance !== ""){
+        actionPoints += 10; 
+        document.getElementById('action-points').textContent = actionPoints;
+        localStorage.setItem('actionPoints', actionPoints);
+        localStorage.setItem('lastUpdateDateAction',today);
+        
+        commentActionPoint = (`出席:〇 行動力経験値 10`);
+    }
+
+    const lastUpdateDatePlanning = localStorage.getItem('lastUpdateDatePlanning');
+    let lastUpdateValuePlanning = localStorage.getItem('lastUpdateValuePlanning');
+    let updateValuePlanning = 0;
+    let commentSubmission;
+    if(valueSubmission1 !== ""){
+        updateValuePlanning += 5;       
+        
+    }
+    if(valueSubmission2 !== ""){    
+        updateValuePlanning += 5;
+    }
+
+    if (lastUpdateDatePlanning === today ) {
+        commentSubmission = '計画力経験値反映済み:'+ lastUpdateValuePlanning;
+    }else {
+        planningSkills += updateValuePlanning;  
+        document.getElementById('planning-skills').textContent = planningSkills;
+        localStorage.setItem('planningSkills', planningSkills);
+        localStorage.setItem('lastUpdateDatePlanning',today);
+        localStorage.setItem('lastUpdateValuePlanning',updateValuePlanning);
+        
+        commentSubmission = (`フォーム提出あり 計画力経験値: `+updateValuePlanning);
+    }
+
+    const lastUpdateDateVerbalizing = localStorage.getItem('lastUpdateDateVerbalizing');
+    let lastUpdateValueVerbalizing = localStorage.getItem('lastUpdateValueVerbalizing');
+    let updateValueVebalizing =  Math.floor(rateJournal*10);
+    let commentJournal;
+
+    if (lastUpdateDateVerbalizing === today ) {
+        commentJournal = '言語化力経験値反映済み:'+ lastUpdateValueVerbalizing;
+    }else {
+        verbalizing += updateValueVebalizing;  
+        document.getElementById('language-skills').textContent = verbalizing;
+        localStorage.setItem('verbalizing', verbalizing);
+        localStorage.setItem('lastUpdateDateVerbalizing',today);
+        localStorage.setItem('lastUpdateValueVerbalizing',updateValueVebalizing);
+        
+        commentJournal = (`日誌記入あり 言語化力経験値: `+updateValueVebalizing);
+    }
+    displayStats();
+    updateLevel();
+    alert(commentActionPoint +'\n'+ commentSubmission+'\n'+ commentJournal);
+    
   } else {
       alert('指定されたセルに入力がありません。');
       handleSignoutClick();
   }
 }
+
+loadDataButton.addEventListener('click', increaseExperience);
+
+
+
 
 async function listMajors() {
     let response;
@@ -422,7 +572,7 @@ async function listMajors() {
 
     gapiLoaded();
     gisLoaded();
-
+    
 
 
 

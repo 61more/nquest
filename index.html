@@ -5,13 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./style.css">
   <script async defer src="https://apis.google.com/js/api.js"></script>
-  <script async defer src="https://accounts.google.com/gsi/client"></script>
- 　 
+  <script async defer src="https://accounts.google.com/gsi/client" ></script>
   <title>Nquest</title>
 </head>
 <body>
   <header>
-    <h1>シンプルなWebゲーム</h1>
+    <h1>Nquest</h1>
     <nav>
         <ul>
             <li><a href="#" class="menu-item" data-page="status">ステータス</a></li>
@@ -50,7 +49,15 @@
             <p>所持ノーマルチケット: <span id="normal-tickets-gacha">0</span></p>
             <p>所持高級チケット: <span id="premium-tickets-gacha">0</span></p>
         </div>
-          <p id="gacha-result">ここにガチャ結果が表示されます。</p>
+        <!-- モーダルウィンドウ -->
+        <div id="myModal" class="modal">
+          <div class="modal-content">
+            <span class="close">&times;</span>
+            <img id="gachaAnimation" src="./img/5662.gif" alt="ガチャアニメーション">
+            <div id="modal-result"></div>
+          </div>
+        </div>
+          
       </div>
     </div>
     <div id="items" class="page">
@@ -72,19 +79,21 @@
         <h1 id="welcome-message"></h1>
         <input type="text" id="username-input" placeholder="ユーザーネームを入力">
         <button id="save-username-button">保存</button>
-        <button id="start-button">ゲーム開始</button>
+        
+        <button id="start-button">経験値増加</button>
         <button id="reset-storage">データを消去する</button>
-        <button id="authorize-button">Google Sheets API 認証</button>
+        <button id="authorize-button">サインアップ</button>
     <button id="signout-button" style="display: none;">サインアウト</button>
+    <button id="loadDataButton" style="display: none;">データ反映</button>
     <pre id="content"></pre>
     </div>
 </main>
 <footer>
-    <p>&copy; 2024 シンプルなWebゲーム</p>
+    <p>&copy; 2024 Nquest</p>
 </footer>
-  <script src="./main.js"></script>
-   
 
+  <script src="./main.js"></script>
+  
   
 </body>
 </html>
