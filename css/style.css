@@ -171,7 +171,7 @@ button {
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.3s;
-  border-radius: 5px;
+  border-radius: 10px;
 }
 
 button:hover {
@@ -223,13 +223,6 @@ button:hover {
   width: 300px; /* 幅を指定 */
   height: auto; /* 高さを自動調整 */
 }
-
-
-
-
-
-
-
 
 footer {
   background-color: #f1f1f1;
