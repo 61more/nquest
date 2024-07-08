@@ -20,24 +20,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Item data
     const items = [
-        { rarity: 3, number: 1, name: '濡れて細くなった犬', image: './img/濡れて細くなった犬.png', type: 'type1', description: 'これはアイテム1の説明です。' },
-        { rarity: 3, number: 2, name: '濡れて細くなった猫', image: './img/濡れて細くなった猫.png', type: 'type2', description: 'これはアイテム2の説明です。' },
-        { rarity: 3, number: 3, name: '新千円札', image: './img/新千円札.png', type: 'type1', description: 'これはアイテム3の説明です。' },
-        { rarity: 3, number: 4, name: 'ゾウ', image: './img/ゾウ.png', type: 'type2', description: 'これはアイテム4の説明です。' },
-        { rarity: 4, number: 5, name: 'ダルマハダカカメガイ', image: './img/ダルマハダカカメガイ.png', type: 'type1', description: 'これはアイテム5の説明です。' },
-        { rarity: 4, number: 6, name: 'トルネードポテト', image: './img/トルネードポテト.png', type: 'type2', description: 'これはアイテム6の説明です。' },
-        { rarity: 5, number: 7, name: 'てんしちゃんの輪っか', image: './img/てんしちゃんの輪っか.png', type: 'type1', description: 'これはアイテム7の説明です。' },
-        { rarity: 5, number: 8, name: '特級呪物　ポリチュウ', image: './img/ポリチュウ.png', type: 'type2', description: 'これはアイテム8の説明です。' },
-        { rarity: 5, number: 9, name: '草むらから飛び出すねこ', image: './img/草むらから飛び出すねこ.png', type: 'type1', description: 'これはアイテム9の説明です。' },
-        { rarity: 5, number: 10, name: '松島さんポスター', image: './img/松島さんポスター.png', type: 'type2', description: 'これはアイテム10の説明です。' },
-        { rarity: 4, number: 11, name: 'オコジョ', image: './img/オコジョ.png', type: 'type1', description: 'これはアイテム1の説明です。' },
-        { rarity: 4, number: 12, name: '赤五索', image: './img/赤五索.png', type: 'type1', description: 'これはアイテム1の説明です。' },
-        { rarity: 3, number: 13, name: 'ギタースタンド', image: './img/ギタースタンド.png', type: 'type1', description: 'これはアイテム1の説明です。' },
-        { rarity: 3, number: 14, name: '突っ張り棒', image: './img/突っ張り棒.png', type: 'type1', description: 'これはアイテム1の説明です。' },
-        { rarity: 3, number: 15, name: '部分入れ歯', image: './img/部分入れ歯.png', type: 'type1', description: 'これはアイテム1の説明です。' },
-        { rarity: 3, number: 16, name: 'ゴマ団子', image: './img/ゴマ団子.png', type: 'type1', description: 'これはアイテム1の説明です。' },
-        { rarity: 3, number: 17, name: '岩塩', image: './img/岩塩.png', type: 'type1', description: 'これはアイテム1の説明です。' },
-        { rarity: 5, number: 18, name: 'ポリチュウTシャツ', image: './img/ポリチュウTシャツ.png', type: 'type1', description: 'これはアイテム1の説明です。' }
+        { rarity: 3, number: 1, name: '濡れて細くなった犬', image: './img/濡れて細くなった犬.png', type: 'ペット', description: 'これはアイテム1の説明です。' },
+        { rarity: 3, number: 2, name: '濡れて細くなった猫', image: './img/濡れて細くなった猫.png', type: 'ペット', description: 'これはアイテム2の説明です。' },
+        { rarity: 3, number: 3, name: '新千円札', image: './img/新千円札.png', type: 'アイテム', description: 'これはアイテム3の説明です。' },
+        { rarity: 3, number: 4, name: 'ゾウ', image: './img/ゾウ.png', type: 'ペット', description: 'これはアイテム4の説明です。' },
+        { rarity: 4, number: 5, name: 'ダルマハダカカメガイ', image: './img/ダルマハダカカメガイ.png', type: 'ペット', description: 'これはアイテム5の説明です。' },
+        { rarity: 4, number: 6, name: 'トルネードポテト', image: './img/トルネードポテト.png', type: 'アイテム', description: 'これはアイテム6の説明です。' },
+        { rarity: 5, number: 7, name: 'てんしちゃんの輪っか', image: './img/てんしちゃんの輪っか.png', type: 'アイテム', description: 'これはアイテム7の説明です。' },
+        { rarity: 5, number: 8, name: '特級呪物　ポリチュウ', image: './img/ポリチュウ.png', type: 'ペット', description: 'これはアイテム8の説明です。' },
+        { rarity: 5, number: 9, name: '草むらから飛び出すねこ', image: './img/草むらから飛び出すねこ.png', type: 'ペット', description: 'これはアイテム9の説明です。' },
+        { rarity: 5, number: 10, name: '松島さんポスター', image: './img/松島さんポスター.png', type: 'アイテム', description: 'これはアイテム10の説明です。' },
+        { rarity: 4, number: 11, name: 'オコジョ', image: './img/オコジョ.png', type: 'ペット', description: 'これはアイテム1の説明です。' },
+        { rarity: 4, number: 12, name: '赤五索', image: './img/赤五索.png', type: 'アイテム', description: 'これはアイテム1の説明です。' },
+        { rarity: 3, number: 13, name: 'ギタースタンド', image: './img/ギタースタンド.png', type: 'アイテム', description: 'これはアイテム1の説明です。' },
+        { rarity: 3, number: 14, name: '突っ張り棒', image: './img/突っ張り棒.png', type: 'アイテム', description: 'これはアイテム1の説明です。' },
+        { rarity: 3, number: 15, name: '部分入れ歯', image: './img/部分入れ歯.png', type: 'アイテム', description: 'これはアイテム1の説明です。' },
+        { rarity: 3, number: 16, name: 'ゴマ団子', image: './img/ゴマ団子.png', type: 'アイテム', description: 'これはアイテム1の説明です。' },
+        { rarity: 3, number: 17, name: '岩塩', image: './img/岩塩.png', type: 'アイテム', description: 'これはアイテム1の説明です。' },
+        { rarity: 5, number: 18, name: 'ポリチュウTシャツ', image: './img/ポリチュウTシャツ.png', type: 'アイテム', description: 'これはアイテム1の説明です。' }
        
         
        
@@ -109,12 +109,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateLevel() {
         const average = (actionPoints + verbalizing + planningSkills) / 3;
         const newLevel = Math.floor(average);
-
-        if (newLevel > level) {
-            // Increment level
-            level = newLevel;
-            document.getElementById('level').textContent = level;
-
+        const oldLevel = localStorage.getItem('level');
+        for(let i =oldLevel;i<=newLevel;i++){
+            level ++;
             // Give tickets based on level
             if (level % 5 === 0) {
                 // Give premium ticket
@@ -123,10 +120,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Give normal ticket
                 normalTickets++;
             }
-
-            updateTicketsDisplay();
-            localStorage.setItem('level', level);
         }
+        document.getElementById('level').textContent = level;
+        updateTicketsDisplay();
+        localStorage.setItem('level', level);
     }
 
     menuItems.forEach(item => {
@@ -291,13 +288,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('start-button').addEventListener('click', function () {
         const gameContainer = document.getElementById('game-container');
-        gameContainer.innerHTML = '<p>経験値が１ずつ上昇しました</p>';
+        gameContainer.innerHTML = '<p>経験値が5ずつ上昇しました(テスト)</p>';
 
         // ここにゲームのロジックを追加します
         // サンプルとしてステータスを増加させる
-        actionPoints += 1;
-        verbalizing += 1;
-        planningSkills += 1;
+        actionPoints += 5;
+        verbalizing += 5;
+        planningSkills += 5;
 
         // 更新された値を表示
 
