@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { rarity: 4, number: 5, name: 'アイテム5', image: 'img/item5.png', type: 'type1', description: 'これはアイテム5の説明です。' },
         { rarity: 4, number: 6, name: 'アイテム6', image: 'img/item6.png', type: 'type2', description: 'これはアイテム6の説明です。' },
         { rarity: 5, number: 7, name: 'アイテム7', image: 'img/item7.png', type: 'type1', description: 'これはアイテム7の説明です。' },
-        { rarity: 5, number: 8, name: 'アイテム8', image: 'img/item8.png', type: 'type2', description: 'これはアイテム8の説明です。' },
+        { rarity: 5, number: 8, name: '特級呪物　ポリチュウ', image: 'img/ポリチュウ.png', type: 'type2', description: 'これはアイテム8の説明です。' },
         { rarity: 5, number: 9, name: 'アイテム9', image: 'img/item9.png', type: 'type1', description: 'これはアイテム9の説明です。' },
         { rarity: 5, number: 10, name: 'アイテム10', image: 'img/item10.png', type: 'type2', description: 'これはアイテム10の説明です。' },
     ];
