@@ -158,6 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to spin gacha and get random item
     function spinGacha(type) {
+        const modalResult = document.getElementById('modal-result');
         modalResult.innerHTML　="";
         // モーダルウィンドウを表示
         const modal = document.getElementById('myModal');
@@ -170,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const item = drawGacha(type); // ガチャを引いて結果を取得
 
             // 結果をモーダルに表示
-            const modalResult = document.getElementById('modal-result');
+            
             modalResult.innerHTML = `<p><img src =item.img>おめでとうございます！ ${item.name} (☆${item.rarity}) のアイテムを手に入れました！</p>`;
 
             // Add item to collected items
