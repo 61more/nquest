@@ -29,14 +29,15 @@ document.addEventListener('DOMContentLoaded', () => {
         { rarity: 5, number: 7, name: 'てんしちゃんの輪っか', image: './img/てんしちゃんの輪っか.png', type: 'type1', description: 'これはアイテム7の説明です。' },
         { rarity: 5, number: 8, name: '特級呪物　ポリチュウ', image: './img/ポリチュウ.png', type: 'type2', description: 'これはアイテム8の説明です。' },
         { rarity: 5, number: 9, name: '草むらから飛び出すねこ', image: './img/草むらから飛び出すねこ.png', type: 'type1', description: 'これはアイテム9の説明です。' },
-        { rarity: 5, number: 10, name: '松島さんポスター', image: './img/松島さんポスター.png', type: 'type2', description: 'これはアイテム10の説明です。' },
+        { rarity: 5, number: 10, name: '松島さんポスター', image: './img/松島さんポスター.png', type: 'type2', description: 'これはアイテム10の説明です。' },
         { rarity: 4, number: 11, name: 'オコジョ', image: './img/オコジョ.png', type: 'type1', description: 'これはアイテム1の説明です。' },
         { rarity: 4, number: 12, name: '赤五索', image: './img/赤五索.png', type: 'type1', description: 'これはアイテム1の説明です。' },
         { rarity: 3, number: 13, name: 'ギタースタンド', image: './img/ギタースタンド.png', type: 'type1', description: 'これはアイテム1の説明です。' },
         { rarity: 3, number: 14, name: '突っ張り棒', image: './img/突っ張り棒.png', type: 'type1', description: 'これはアイテム1の説明です。' },
         { rarity: 3, number: 15, name: '部分入れ歯', image: './img/部分入れ歯.png', type: 'type1', description: 'これはアイテム1の説明です。' },
         { rarity: 3, number: 16, name: 'ゴマ団子', image: './img/ゴマ団子.png', type: 'type1', description: 'これはアイテム1の説明です。' },
-        { rarity: 3, number: 17, name: '岩塩', image: './img/岩塩.png', type: 'type1', description: 'これはアイテム1の説明です。' }
+        { rarity: 3, number: 17, name: '岩塩', image: './img/岩塩.png', type: 'type1', description: 'これはアイテム1の説明です。' },
+        { rarity: 5, number: 18, name: 'ポリチュウTシャツ', image: './img/ポリチュウTシャツ.png', type: 'type1', description: 'これはアイテム1の説明です。' }
        
         
        
