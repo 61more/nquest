@@ -26,10 +26,10 @@ document.addEventListener('DOMContentLoaded', () => {
         { rarity: 4, number: 4, name: 'アイテム4', image: 'img/item4.png', type: 'type2', description: 'これはアイテム4の説明です。' },
         { rarity: 4, number: 5, name: 'アイテム5', image: 'img/item5.png', type: 'type1', description: 'これはアイテム5の説明です。' },
         { rarity: 4, number: 6, name: 'アイテム6', image: 'img/item6.png', type: 'type2', description: 'これはアイテム6の説明です。' },
-        { rarity: 5, number: 7, name: 'てんしちゃんの輪っか', image: '/てんしちゃんの輪っか.png', type: 'type1', description: 'これはアイテム7の説明です。' },
-        { rarity: 5, number: 8, name: '特級呪物　ポリチュウ', image: '/ポリチュウ.png', type: 'type2', description: 'これはアイテム8の説明です。' },
-        { rarity: 5, number: 9, name: '草むらから飛び出すねこ', image: '/草むらから飛び出すねこ.png', type: 'type1', description: 'これはアイテム9の説明です。' },
-        { rarity: 5, number: 10, name: '松島さんポスター', image: '/松島さんポスター.png', type: 'type2', description: 'これはアイテム10の説明です。' },
+        { rarity: 5, number: 7, name: 'てんしちゃんの輪っか', image: './てんしちゃんの輪っか.png', type: 'type1', description: 'これはアイテム7の説明です。' },
+        { rarity: 5, number: 8, name: '特級呪物　ポリチュウ', image: './ポリチュウ.png', type: 'type2', description: 'これはアイテム8の説明です。' },
+        { rarity: 5, number: 9, name: '草むらから飛び出すねこ', image: './草むらから飛び出すねこ.png', type: 'type1', description: 'これはアイテム9の説明です。' },
+        { rarity: 5, number: 10, name: '松島さんポスター', image: './松島さんポスター.png', type: 'type2', description: 'これはアイテム10の説明です。' },
     ];
 
 
@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // 結果をモーダルに表示
             
-            modalResult.innerHTML = `<p><img src =item.img>おめでとうございます！ ${item.name} (☆${item.rarity}) のアイテムを手に入れました！</p>`;
+            modalResult.innerHTML = `<p><img src =${item.img}>おめでとうございます！ ${item.name} (☆${item.rarity}) のアイテムを手に入れました！</p>`;
 
             // Add item to collected items
             collectedItems[type].push(item);
