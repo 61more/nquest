@@ -171,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // 結果をモーダルに表示
             const modalResult = document.getElementById('modal-result');
-            modalResult.innerHTML = `<p>${item.image}おめでとうございます！ ${item.name} (☆${item.rarity}) のアイテムを手に入れました！</p>`;
+            modalResult.innerHTML = `<p><img src =item.img>おめでとうございます！ ${item.name} (☆${item.rarity}) のアイテムを手に入れました！</p>`;
 
             // Add item to collected items
             collectedItems[type].push(item);
