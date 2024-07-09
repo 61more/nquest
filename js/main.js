@@ -229,8 +229,7 @@ document.addEventListener('DOMContentLoaded', () => {
             for(let i=0;i<10;i++){
                 obtainedItems.push(drawGacha(type));
             }
-            
-            
+        
             // 結果をモーダルに表示
             
             modalResult.innerHTML = `
@@ -327,7 +326,8 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.removeItem('normalTickets');
         localStorage.removeItem('premiumTickets');
         localStorage.removeItem('collectedItems');
-        localStorage.removeItem('username');
+        localStorage.removeItem('userAddress');
+        localStorage.removeItem('userName');
         localStorage.removeItem('lastUpdateDateAction');
         localStorage.removeItem('lastUpdateDatePlanning');
         localStorage.removeItem('lastUpdateValueVerbalizing');
@@ -345,10 +345,12 @@ document.addEventListener('DOMContentLoaded', () => {
         updateLevel();
         updateTicketsDisplay();
         updateItemList(); // Update item list to clear displayed items
-        usernameInput.style.display = 'block';
-        saveUsernameButton.style.display = 'block';
+        userAddressInput.style.display = 'block';
+        userNameInput.style.display = 'block';
+        saveuserAddressButton.style.display = 'block';
         welcomeMessage.textContent = '';
-        usernameInput.textContent = '';
+        userAddressInput.textContent = '';
+        userNameInput.textContent = '';
         alert('ローカルストレージのデータがリセットされました。');
     });
 
@@ -400,30 +402,51 @@ document.addEventListener('DOMContentLoaded', () => {
     const DISCOVERY_DOCS = ["https://sheets.googleapis.com/$discovery/rest?version=v4"];
     const SCOPES = "https://www.googleapis.com/auth/spreadsheets.readonly";
 
-    const usernameInput = document.getElementById('username-input');
-    const saveUsernameButton = document.getElementById('save-username-button');
+    const userAddressInput = document.getElementById('userAddress-input');
+    const userNameInput = document.getElementById('userName-input');
+    const saveuserAddressButton = document.getElementById('save-userAddress-button');
+    const saveuserNameButton = document.getElementById('save-userName-button');
     const welcomeMessage = document.getElementById('welcome-message');
 
-    function saveUsername() {
-        const username = usernameInput.value;
-        if (username) {
-            localStorage.setItem('username', username);
-            displayUsername();
+    function saveuserAddress() {
+        const userAddress = userAddressInput.value;
+        if (userAddress) {
+            localStorage.setItem('userAddress', userAddress);
+            displayuserAddress();
         }
     }
-    saveUsernameButton.addEventListener('click', saveUsername);
+    saveuserAddressButton.addEventListener('click', saveuserAddress);
+    function saveuserName() {
+        const userName = userNameInput.value;
+        if (userName) {
+            localStorage.setItem('userName', userName);
+            displayuserName();
+        }
+    }
+    saveuserNameButton.addEventListener('click', saveuserName);
 
-    function displayUsername() {
-        const username = localStorage.getItem('username');
-        if (username) {
-            welcomeMessage.textContent = `Welcome, ${username}!`;
-            usernameInput.style.display = 'none';
-            saveUsernameButton.style.display = 'none';
+    function displayuserAddress() {
+        const userAddress = localStorage.getItem('userAddress');
+        if (userAddress) {
+            welcomeMessage.textContent = `Welcome, ${userAddress}!`;
+            userAddressInput.style.display = 'none';
+            saveuserAddressButton.style.display = 'none';
         } else {
             welcomeMessage.textContent = '';
         }
     }
-    displayUsername();
+    displayuserAddress();
+    function displayuserName() {
+        const userName = localStorage.getItem('userName');
+        if (userName) {
+            
+            userNameInput.style.display = 'none';
+            saveuserNameButton.style.display = 'none';
+        } else {
+            welcomeMessage.textContent = '';
+        }
+    }
+    displayuserName();
 
     const authorizeButton = document.getElementById('authorize-button');
     const signoutButton = document.getElementById('signout-button');
@@ -502,26 +525,18 @@ document.addEventListener('DOMContentLoaded', () => {
     let valueAttendance = 0;
     let valueSubmission1 = 0;
     let valueSubmission2 = 0;
-    let rateJournal = 0;
+    let fillingRateJournal = 0;
 
 
-    async function checkCell(username) {
-        let sheetName;
-        if (username === 'アーニャ') {
-            sheetName = 'アーニャ';
-        } else if (username === 'ベッキー') {
-            sheetName = 'ベッキー';
-        } else if (username === 'ユーザー3') {
-            sheetName = 'ユーザー3';
-        } else {
-            return false;
-        }
+    /*async function checkCell(userAddress) {
+        
 
         try {
             const response = await gapi.client.sheets.spreadsheets.values.get({
-                spreadsheetId: '1QMjhvVYjDOco7jhZ9hnRx8KyrvOEq5QdC3bB-GSTsU0',
-                range: `${sheetName}!C4:D15`,
+                spreadsheetId: '1pHTQjEvdWvvOZ4HaO_KpP-Mo7QebsZaf8nc0vuCoSzQ',
+                range: `シート3!A2:R11`,
             });
+            console.log(response.result.values);
             valueAttendance = response.result.values[0][0];
             valueSubmission1 = response.result.values[1][0];
             valueSubmission2 = response.result.values[1][1];
@@ -542,8 +557,72 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error(err);
             return false;
         }
-    }
+    }*/
 
+        async function checkCell(userAddress,userName) {
+            try {
+                const responseAttendance = await gapi.client.sheets.spreadsheets.values.get({
+                    spreadsheetId: '1pHTQjEvdWvvOZ4HaO_KpP-Mo7QebsZaf8nc0vuCoSzQ',
+                    range: `シート3!A1:R11`,
+                });
+                const responseJournal = await gapi.client.sheets.spreadsheets.values.get({
+                    spreadsheetId: '1isGrO8pWVxKSE1GeZih_AV1VoBU-zqli2gZlf5pdpjY',
+                    range: `シート2!A2:K39`,
+                });
+        const rowsAttendance = responseAttendance.result.values;
+        const today = new Date();
+        const formattedToday = `${today.getMonth() + 1}/${today.getDate()}`; // 7/8のような形式にフォーマット
+        const headerRowAttendance = rowsAttendance[0]; // タイトル行
+        const dataRowsAttendance = rowsAttendance.slice(1); // データ行（2行目以降）
+
+        // 今日の日付が含まれる列のインデックスを探す
+        const dateColumnIndexAttendance = headerRowAttendance.findIndex(date => date === formattedToday);
+
+        if (dateColumnIndexAttendance === -1) {
+            console.log('今日の日付が見つかりませんでした。(出席)');
+            return [];
+        }
+
+        // 名前が一致する行を探す
+        const matchingRowsAttendance = dataRowsAttendance.filter(row => row.includes(userAddress));
+
+        if (matchingRowsAttendance.length === 0) {
+            console.log('一致する名前が見つかりませんでした。(出席)');
+            return [];
+        }
+
+        // 一致する行から今日の日付の列の値を抽出
+        valueAttendance = matchingRowsAttendance.map(row => row[dateColumnIndexAttendance]);
+
+        console.log('Matching Rows:', matchingRowsAttendance);
+        console.log('Results:', valueAttendance);
+
+
+        const rowsJournal = responseJournal.result.values;
+        const headerRowJournal = rowsJournal[0]; // タイトル行
+        const dataRowsJournal = rowsJournal.slice(3); // データ行（4行目以降）
+        // ユーザー名に一致する列のインデックスを取得
+        const columnIndexJournal = headerRowJournal.indexOf(userName);
+        if (columnIndexJournal === -1) {
+            console.error('一致する名前が見つかりませんでした。(日誌)');
+            return [];
+        }
+        let nonEmptyCountJournal = 0;
+        dataRowsJournal.forEach(row => {
+            if (row[columnIndexJournal] !== '' && row[columnIndexJournal] !== '') {
+                nonEmptyCountJournal++;
+            }
+        });
+        fillingRateJournal = nonEmptyCountJournal /35;
+    console.log('Non-empty values count:', nonEmptyCountJournal);
+
+
+        return true;
+            } catch (err) {
+                console.error('Error fetching data:', err);
+                return [];
+            }
+        }
 
 
     function getToday() {
@@ -552,25 +631,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function increaseExperience() {
-        const username = localStorage.getItem('username');
+        const userAddress = localStorage.getItem('userAddress');
+        const userName = localStorage.getItem('userName');
         const today = getToday();
 
 
 
-        const cellFilled = await checkCell(username);
+        const cellFilled = await checkCell(userAddress,userName);
         if (cellFilled) {
             const lastUpdateDateAction = localStorage.getItem('lastUpdateDateAction');
-            let commentActionPoint;
-
+            let commentActionPoint = '';
             if (lastUpdateDateAction === today) {
                 commentActionPoint = '行動力経験値獲得済み: 10';
-            } else if (valueAttendance !== "") {
+            } else if (valueAttendance == '出') {
                 actionPoints += 10;
                 document.getElementById('action-points').textContent = actionPoints;
                 localStorage.setItem('actionPoints', actionPoints);
                 localStorage.setItem('lastUpdateDateAction', today);
 
-                commentActionPoint = (`出席:〇 行動力経験値 10`);
+                commentActionPoint = ('出席:〇 行動力経験値 10');
             }
 
             const lastUpdateDatePlanning = localStorage.getItem('lastUpdateDatePlanning');
@@ -598,11 +677,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const lastUpdateDateVerbalizing = localStorage.getItem('lastUpdateDateVerbalizing');
-            let lastUpdateValueVerbalizing = localStorage.getItem('lastUpdateValueVerbalizing');
-            let updateValueVebalizing = Math.floor(rateJournal * 10);
+            let lastUpdateValueVerbalizing = parseInt(localStorage.getItem('lastUpdateValueVerbalizing'));
+            let updateValueVebalizing = Math.floor(fillingRateJournal * 10);
             let commentJournal;
-
-            if (lastUpdateDateVerbalizing === today) {
+            
+            if (lastUpdateDateVerbalizing === today & lastUpdateValueVerbalizing === updateValueVebalizing) {
                 commentJournal = '言語化力経験値反映済み:' + lastUpdateValueVerbalizing;
             } else {
                 verbalizing += updateValueVebalizing;
@@ -626,33 +705,8 @@ document.addEventListener('DOMContentLoaded', () => {
     loadDataButton.addEventListener('click', increaseExperience);
 
 
-
-
-    async function listMajors() {
-        let response;
-        try {
-            response = await gapi.client.sheets.spreadsheets.values.get({
-                spreadsheetId: '1QMjhvVYjDOco7jhZ9hnRx8KyrvOEq5QdC3bB-GSTsU0',
-                range: 'シート1!C4:D15',
-            });
-        } catch (err) {
-            console.error(err);
-            return;
-        }
-        const range = response.result;
-        if (!range || !range.values || range.values.length == 0) {
-            content.textContent = 'No data found.';
-            return;
-        }
-        content.textContent = range.values.map(row => row.join(', ')).join('\n');
-    }
-
-
     gapiLoaded();
     gisLoaded();
-
-
-
 
 
 
