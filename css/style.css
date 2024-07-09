@@ -179,8 +179,31 @@ button:hover {
 }
 
 
+.gacha-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-
+.gacha-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px 40px;
+  margin:20px 0;
+}
+#premium-gacha-button , #premium-gacha-ten-button{
+  background-color: goldenrod;
+}
+#premium-gacha-button:hover , #premium-gacha-ten-button:hover{
+  background-color: #b8860b;
+}
+.gacha-stats {
+  display: flex;
+  justify-content: space-between;
+  width: 85%;
+  margin-right:20px ;
+  
+}
 
 /* モーダルウィンドウのスタイル */
 .modal {
@@ -207,6 +230,22 @@ button:hover {
 
 #item-image{
   width: 35%;
+  height: auto;
+}
+#item-images {
+  width: 80%;
+  height: auto;
+}
+.gacha-result-container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  justify-items: center;
+  align-items: center;
+  margin: 20px 0;
+}
+.gacha-result-items{
+  display: inline-block;
 }
 
 .close {
