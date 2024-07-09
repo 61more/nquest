@@ -26,10 +26,10 @@ document.addEventListener('DOMContentLoaded', () => {
         { rarity: 3, number: 4, name: 'ゾウ', image: './img/ゾウ.png', type: 'ペット', description: 'これはアイテム4の説明です。' },
         { rarity: 4, number: 5, name: 'ダルマハダカカメガイ', image: './img/ダルマハダカカメガイ.png', type: 'ペット', description: 'これはアイテム5の説明です。' },
         { rarity: 4, number: 6, name: 'トルネードポテト', image: './img/トルネードポテト.png', type: 'アイテム', description: 'これはアイテム6の説明です。' },
-        { rarity: 5, number: 8, name: 'てんしちゃんの輪っか', image: './img/てんしちゃんの輪っか.png', type: 'アイテム', description: 'これはアイテム7の説明です。' },
-        { rarity: 5, number: 7, name: '特級呪物　ポリチュウ', image: './img/ポリチュウ.png', type: 'ペット', description: 'これはアイテム8の説明です。' },
+        { rarity: 5, number: 7, name: 'てんしちゃんの輪っか', image: './img/てんしちゃんの輪っか.png', type: 'アイテム', description: 'これはアイテム7の説明です。' },
+        { rarity: 5, number: 8, name: '特級呪物　ポリチュウ', image: './img/ポリチュウ.png', type: 'ペット', description: 'これはアイテム8の説明です。' },
         { rarity: 5, number: 9, name: '草むらから飛び出すねこ', image: './img/草むらから飛び出すねこ.png', type: 'ペット', description: 'これはアイテム9の説明です。' },
-        { rarity: 5, number: 10, name: '松島さんポスター', image: './img/松島さんポスター.png', type: 'アイテム', description: 'これはアイテム10の説明です。' },
+        { rarity: 5, number: 10, name: '松島さんポスター', image: './img/松島さんポスター.png', type: 'アイテム', description: 'これはアイテム10の説明です。' },
         { rarity: 4, number: 11, name: 'オコジョ', image: './img/オコジョ.png', type: 'ペット', description: 'これはアイテム1の説明です。' },
         { rarity: 4, number: 12, name: '赤五索', image: './img/赤五索.png', type: 'アイテム', description: 'これはアイテム1の説明です。' },
         { rarity: 3, number: 13, name: 'ギタースタンド', image: './img/ギタースタンド.png', type: 'アイテム', description: 'これはアイテム1の説明です。' },
@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
     <img src="${item.image}" alt="${item.name}">
     <div>
         <h3>${item.name}</h3>
-        <p>レア度: ☆${item.rarity}</p>
+        <p>☆${item.rarity}</p>
         <p>タイプ: ${item.type}</p>
         <p>${item.description}</p>
     </div>
@@ -161,7 +161,25 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('高級チケットが足りません！');
         }
     });
-
+    //10連
+    document.getElementById('normal-gacha-ten-button').addEventListener('click', function () {
+        if (normalTickets >= 10) {
+            spinGachaTen('normal');
+            normalTickets -= 10;
+            updateTicketsDisplay();
+        } else {
+            alert('ノーマルチケットが足りません！');
+        }
+    });
+    document.getElementById('premium-gacha-ten-button').addEventListener('click', function () {
+        if (premiumTickets >= 10) {
+            spinGachaTen('premium');
+            premiumTickets -= 10;
+            updateTicketsDisplay();
+        } else {
+            alert('高級チケットが足りません！');
+        }
+    });
 
 
     // Function to spin gacha and get random item
@@ -194,6 +212,54 @@ document.addEventListener('DOMContentLoaded', () => {
 
         }, 3000); // 3000ミリ秒 = 3秒
     }
+    function spinGachaTen(type) {
+        const modalResult = document.getElementById('modal-result');
+        modalResult.innerHTML　="";
+        // モーダルウィンドウを表示
+        const modal = document.getElementById('myModal');
+        modal.style.display = 'block';
+        const gachaAnimation = document.getElementById('gachaAnimation');
+        gachaAnimation.style.display = 'block';
+
+        // 3秒後にガチャ結果を表示する
+        setTimeout(() => {
+            
+            gachaAnimation.style.display = 'none';
+            const obtainedItems = [];
+            for(let i=0;i<10;i++){
+                obtainedItems.push(drawGacha(type));
+            }
+            
+            
+            // 結果をモーダルに表示
+            
+            modalResult.innerHTML = `
+    <div class="gacha-result-container">
+        ${obtainedItems.map(item => `
+            <div class="gacha-result-items">
+                <img src="${item.image}" id="item-image">
+                <p>${item.name} (☆${item.rarity})</p>
+            </div>
+        `).join('')}
+    </div>
+`;
+
+            // Add item to collected items
+            for(i = 0;i<10;i++){
+                collectedItems[type].push(obtainedItems[i]);
+            }
+            
+            localStorage.setItem('collectedItems', JSON.stringify(collectedItems));
+
+            // Update item list display
+            updateItemList();
+
+
+        }, 3000); // 3000ミリ秒 = 3秒
+    }
+
+
+
 
 
     // モーダルウィンドウの閉じるボタン
