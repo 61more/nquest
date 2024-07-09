@@ -171,7 +171,7 @@ button {
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.3s;
-  border-radius: 10px;
+  border-radius: 5px;
 }
 
 button:hover {
@@ -205,6 +205,10 @@ button:hover {
   text-align: center;
 }
 
+#item-image{
+  width: 35%;
+}
+
 .close {
   color: #aaa;
   float: right;
@@ -220,9 +224,17 @@ button:hover {
 }
 
 #gachaAnimation {
-  width: 300px; /* 幅を指定 */
+  width: 40%; /* 幅を指定 */
   height: auto; /* 高さを自動調整 */
+  margin: auto;
 }
+
+
+
+
+
+
+
 
 footer {
   background-color: #f1f1f1;
