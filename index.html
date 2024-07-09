@@ -1,59 +1,58 @@
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!--css-->
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/UsernameInput.css">
-
+  <link rel="stylesheet" href="./css/UsernameInput.css">
+  <link rel="stylesheet" href="./css/style.css">
   <script async defer src="https://apis.google.com/js/api.js"></script>
-  <script async defer src="https://accounts.google.com/gsi/client"></script>
+  <script async defer src="https://accounts.google.com/gsi/client" ></script>
   <title>Nquest</title>
 </head>
-
 <body>
   <header>
     <h1>Nquest</h1>
     <nav>
-      <ul>
-        <li><a href="#" class="menu-item" data-page="status">ステータス</a></li>
-        <li><a href="#" class="menu-item" data-page="records">記録</a></li>
-        <li><a href="#" class="menu-item" data-page="gacha">ガチャ</a></li>
-        <li><a href="#" class="menu-item" data-page="items">アイテム</a></li>
-        <li><a href="#" class="menu-item" data-page="game">ゲーム</a></li>
-      </ul>
+        <ul>
+            <li><a href="#" class="menu-item" data-page="status">ステータス</a></li>
+            <li><a href="#" class="menu-item" data-page="records">記録</a></li>
+            <li><a href="#" class="menu-item" data-page="gacha">ガチャ</a></li>
+            <li><a href="#" class="menu-item" data-page="items">アイテム</a></li>
+            <li><a href="#" class="menu-item" data-page="game">ゲーム</a></li>
+        </ul>
     </nav>
-  </header>
-  <main>
+</header>
+<main>
     <div id="status" class="page">
       <h2>ステータス</h2>
-      <p>行動力: <span id="action-points">0</span></p>
-      <p>言語化力: <span id="language-skills">0</span></p>
-      <p>計画力: <span id="planning-skills">0</span></p>
-      <p>レベル: <span id="level">0</span></p>
-      <p>ノーマルチケット: <span id="normal-tickets">0</span></p>
-      <p>高級チケット: <span id="premium-tickets">0</span></p>
+            <p>行動力: <span id="action-points">0</span></p>
+            <p>言語化力: <span id="language-skills">0</span></p>
+            <p>計画力: <span id="planning-skills">0</span></p>
+            <p>レベル: <span id="level">0</span></p>
+            <p>ノーマルチケット: <span id="normal-tickets">0</span></p>
+            <p>高級チケット: <span id="premium-tickets">0</span></p>
     </div>
     <div id="records" class="page">
       <h2>記録</h2>
-      <div class="records-container">
-        <p>出席: <span id="attendance-status">-</span></p>
-        <p>日誌提出率: <span id="journal-submission-rate">0%</span></p>
-        <p>フォーム提出率: <span id="form-submission-rate">0%</span></p>
-      </div>
+            <div class="records-container">
+                <p>出席: <span id="attendance-status">-</span></p>
+                <p>日誌提出率: <span id="journal-submission-rate">0%</span></p>
+                <p>フォーム提出率: <span id="form-submission-rate">0%</span></p>
+            </div>
     </div>
     <div id="gacha" class="page">
       <h2>ガチャ</h2>
       <div class="gacha-container">
-        <button id="normal-gacha-button">ノーマルガチャを引く</button>
-
-        <button id="premium-gacha-button">高級ガチャを引く</button>
-        <div class="gacha-stats">
-          <p>所持ノーマルチケット: <span id="normal-tickets-gacha">0</span></p>
-          <p>所持高級チケット: <span id="premium-tickets-gacha">0</span></p>
+        <div class = gacha-buttons>
+          <button id="normal-gacha-button">ノーマルガチャを引く</button>
+          <button id="premium-gacha-button">高級ガチャを引く</button>
+          <button id="normal-gacha-ten-button">ノーマルガチャ(10連)を引く</button>
+          <button id="premium-gacha-ten-button">高級ガチャ(10連)を引く</button>
+        </div>
+          
+          <div class="gacha-stats">
+            <p>所持ノーマルチケット: <span id="normal-tickets-gacha">0</span></p>
+            <p>所持高級チケット: <span id="premium-tickets-gacha">0</span></p>
         </div>
         <!-- モーダルウィンドウ -->
         <div id="myModal" class="modal">
@@ -61,9 +60,10 @@
             <span class="close">&times;</span>
             <img id="gachaAnimation" src="./img/5662.gif" alt="ガチャアニメーション">
             <div id="modal-result"></div>
+            
           </div>
         </div>
-
+          
       </div>
     </div>
     <div id="items" class="page">
@@ -73,42 +73,33 @@
         <button data-sort="number-desc">ナンバー順 (降順)</button>
         <button data-sort="acquired-asc">入手順 (昇順)</button>
         <button data-sort="acquired-desc">入手順 (降順)</button>
-      </div>
+    </div>
       <ul id="item-list"></ul>
-
-
+      
+      
     </div>
     <div id="game" class="page active">
-      <div id="game-container">
-        <p>ここにゲームが表示されます。</p>
-      </div>
-
-      <h1 id="welcome-message"></h1>
-
-      <button id="start-button">経験値増加</button>
-      <button id="reset-storage">データを消去する</button>
-      <button id="authorize-button">サインアップ</button>
-      <button id="signout-button" style="display: none;">サインアウト</button>
-      <button id="loadDataButton" style="display: none;">データ反映</button>
-      <pre id="content"></pre>
-
-      <!--Username-->
-      <div style="display: flex; padding-top: 10px;">
-        <div class="inputGroup">
-          <input type="text" id="username-input" placeholder="ユーザーネームを入力" required="" autocomplete="off">
+        <div id="game-container">
+            <p>ここにゲームが表示されます。</p>
         </div>
-        <div style="padding-left: 10px; padding-top: 10px;">
-          <button id="save-username-button">保存</button>
-        </div>
-      </div>
+        <h1 id="welcome-message"></h1>
+        <input type="text" id="username-input" placeholder="ユーザーネームを入力">
+        <button id="save-username-button">保存</button>
+        
+        <button id="start-button">経験値増加</button>
+        <button id="reset-storage">データを消去する</button>
+        <button id="authorize-button">サインアップ</button>
+    <button id="signout-button" style="display: none;">サインアウト</button>
+    <button id="loadDataButton" style="display: none;">データ反映</button>
+    <pre id="content"></pre>
     </div>
-  </main>
-  <footer>
+</main>
+<footer>
     <p>&copy; 2024 Nquest</p>
-  </footer>
+</footer>
 
-  <script src="js/main.js"></script>
-
+  <script src="./js/main.js"></script>
+  
+  
 </body>
-
 </html>
