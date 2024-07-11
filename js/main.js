@@ -37,7 +37,12 @@ document.addEventListener('DOMContentLoaded', () => {
         { rarity: 3, number: 15, name: '部分入れ歯', image: './img/部分入れ歯.png', type: 'アイテム', description: 'これはアイテム1の説明です。' },
         { rarity: 3, number: 16, name: 'ゴマ団子', image: './img/ゴマ団子.png', type: 'アイテム', description: 'これはアイテム1の説明です。' },
         { rarity: 3, number: 17, name: '岩塩', image: './img/岩塩.png', type: 'アイテム', description: 'これはアイテム1の説明です。' },
-        { rarity: 5, number: 18, name: 'ポリチュウTシャツ', image: './img/ポリチュウTシャツ.png', type: 'アイテム', description: 'これはアイテム1の説明です。' }
+        { rarity: 5, number: 18, name: 'ポリチュウTシャツ', image: './img/ポリチュウTシャツ.png', type: 'アイテム', description: 'これはアイテム1の説明です。' },
+        { rarity: 5, number: 18, name: 'ズルーズ', image: './img/ズルーズ.png', type: 'ペット', description: 'これはアイテム1の説明です。' },
+        { rarity: 5, number: 18, name: 'ディグロジャー', image: './img/ディグロジャー.png', type: 'ペット', description: 'これはアイテム1の説明です。' },
+        { rarity: 3, number: 18, name: 'でめきんちゃん', image: './img/でめきんちゃん.png', type: 'ペット', description: 'これはアイテム1の説明です。' },
+        { rarity: 5, number: 18, name: '水にゃんこ', image: './img/水にゃんこ.png', type: 'アイテム', description: 'これはアイテム1の説明です。' },
+        { rarity: 5, number: 18, name: '覚醒した渡邉さん', image: './img/渡邉さん.png', type: 'アイテム', description: 'これはアイテム1の説明です。' }
        
         
        
@@ -649,7 +654,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.setItem('actionPoints', actionPoints);
                 localStorage.setItem('lastUpdateDateAction', today);
 
-                commentActionPoint = ('出席:〇 行動力経験値 10');
+                commentActionPoint = '出席:〇 行動力経験値 10';
             }
 
             const lastUpdateDatePlanning = localStorage.getItem('lastUpdateDatePlanning');
