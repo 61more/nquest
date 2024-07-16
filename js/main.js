@@ -186,6 +186,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // モーダルウィンドウの閉じるボタン
+    const closeModal = document.getElementsByClassName("close")[0];
+    closeModal.onclick = function () {
+        const modal = document.getElementById('myModal');
+        modal.style.display = 'none';
+        closeModal.style.display = 'block';
+    }
 
     // Function to spin gacha and get random item
     function spinGacha(type) {
@@ -213,7 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Update item list display
             updateItemList();
-
+            closeModal.style.display = 'block';
 
         }, 3000); // 3000ミリ秒 = 3秒
     }
@@ -257,6 +264,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Update item list display
             updateItemList();
+            closeModal.style.display = 'block';
 
 
         }, 3000); // 3000ミリ秒 = 3秒
@@ -266,13 +274,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-    // モーダルウィンドウの閉じるボタン
-    const closeModal = document.getElementsByClassName("close")[0];
-    closeModal.onclick = function () {
-        const modal = document.getElementById('myModal');
-        modal.style.display = 'none';
-
-    }
+    
 
     // ガチャを引く関数 (実際のガチャ処理をここに移動)
     function drawGacha(type) {
@@ -404,8 +406,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-    const DISCOVERY_DOCS = ["https://sheets.googleapis.com/$discovery/rest?version=v4"];
-    const SCOPES = "https://www.googleapis.com/auth/spreadsheets.readonly";
+    
 
     const userAddressInput = document.getElementById('userAddress-input');
     const userNameInput = document.getElementById('userName-input');
@@ -433,7 +434,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function displayuserAddress() {
         const userAddress = localStorage.getItem('userAddress');
         if (userAddress) {
-            welcomeMessage.textContent = `Welcome, ${userAddress}!`;
+            
             userAddressInput.style.display = 'none';
             saveuserAddressButton.style.display = 'none';
         } else {
@@ -444,7 +445,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function displayuserName() {
         const userName = localStorage.getItem('userName');
         if (userName) {
-            
+            welcomeMessage.textContent = `Welcome, ${userName}!`;
             userNameInput.style.display = 'none';
             saveuserNameButton.style.display = 'none';
         } else {
@@ -457,6 +458,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const signoutButton = document.getElementById('signout-button');
     const content = document.getElementById('content');
 
+    const DISCOVERY_DOCS = ["https://sheets.googleapis.com/$discovery/rest?version=v4"];
+    const SCOPES = "https://www.googleapis.com/auth/spreadsheets.readonly";
 
 
     let tokenClient;
