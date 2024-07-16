@@ -191,7 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
     closeModal.onclick = function () {
         const modal = document.getElementById('myModal');
         modal.style.display = 'none';
-        closeModal.style.display = 'block';
+        closeModal.style.display = 'none';
     }
 
     // Function to spin gacha and get random item
