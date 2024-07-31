@@ -467,7 +467,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let gisInited = false;
 
     function gapiLoaded() {
-        gapi.load('client', initializeGapiClient);
+        gapi.load('client:auth2', initializeGapiClient);
     }
 
     async function initializeGapiClient() {
@@ -489,6 +489,8 @@ document.addEventListener('DOMContentLoaded', () => {
         maybeEnableButtons();
     }
 
+   
+
     function maybeEnableButtons() {
         if (gapiInited && gisInited) {
             authorizeButton.style.display = 'block';
@@ -505,8 +507,8 @@ document.addEventListener('DOMContentLoaded', () => {
             authorizeButton.style.display = 'none';
             signoutButton.style.display = 'block';
             loadDataButton.style.display = 'block';
-            //await increaseExperience();
-            //await listMajors();
+            await increaseExperience();
+            await listMajors();
         };
 
         if (gapi.client.getToken() === null) {
@@ -530,10 +532,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    let valueAttendance = 0;
-    let valueSubmission1 = 0;
-    let valueSubmission2 = 0;
-    let fillingRateJournal = 0;
+    
 
 
     /*async function checkCell(userAddress) {
@@ -569,35 +568,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         async function checkCell(userAddress,userName) {
             try {
-                const responseAttendance = await gapi.client.sheets.spreadsheets.values.get({
-                    spreadsheetId: '1pHTQjEvdWvvOZ4HaO_KpP-Mo7QebsZaf8nc0vuCoSzQ',
-                    range: `シート3!A1:R11`,
+                const sheetName = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getName();
+                const sheetData = await gapi.client.sheets.spreadsheets.values.get({
+                    spreadsheetId: '1QMjhvVYjDOco7jhZ9hnRx8KyrvOEq5QdC3bB-GSTsU0',
+                    
+                    range: `${sheetName}!B1:AF6`,
                 });
-                const responseJournal = await gapi.client.sheets.spreadsheets.values.get({
-                    spreadsheetId: '1isGrO8pWVxKSE1GeZih_AV1VoBU-zqli2gZlf5pdpjY',
-                    range: `シート2!A2:K39`,
-                });
-        const rowsAttendance = responseAttendance.result.values;
+                
+        const data = sheetData.result.values;console.log(data);
         const today = new Date();
-        const formattedToday = `${today.getMonth() + 1}/${today.getDate()}`; // 7/8のような形式にフォーマット
-        const headerRowAttendance = rowsAttendance[0]; // タイトル行
-        const dataRowsAttendance = rowsAttendance.slice(1); // データ行（2行目以降）
-
-        // 今日の日付が含まれる列のインデックスを探す
-        const dateColumnIndexAttendance = headerRowAttendance.findIndex(date => date === formattedToday);
-
-        if (dateColumnIndexAttendance === -1) {
-            console.log('今日の日付が見つかりませんでした。(出席)');
-            return [];
-        }
-
-        // 名前が一致する行を探す
-        const matchingRowsAttendance = dataRowsAttendance.filter(row => row.includes(userAddress));
-
-        if (matchingRowsAttendance.length === 0) {
-            console.log('一致する名前が見つかりませんでした。(出席)');
-            return [];
-        }
+        
 
         // 一致する行から今日の日付の列の値を抽出
         valueAttendance = matchingRowsAttendance.map(row => row[dateColumnIndexAttendance]);
@@ -711,8 +691,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     loadDataButton.addEventListener('click', increaseExperience);
+    
+    
 
-
+   
     gapiLoaded();
     gisLoaded();
 
